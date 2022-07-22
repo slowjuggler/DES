@@ -122,48 +122,48 @@ void xoring(char* input_1, char* input_2, int lenth, char* output) {
     int i = 0;
     for(i = 0; i < lenth; i++) {
         if (*(input_1 + i) != *(input_2 + i)) {
-			 *(output + i) = '1';
-		} else {
-			*(output + i) = '0';
-		}
+		*(output + i) = '1';
+	} else {
+	    *(output + i) = '0';
+	}
     }
 }
 
 void bytebit(char *input8, char *output64) {
-	int i = 0, k = 0;
-	while (i < 64) {
-		char temp[8] = {0};
-		for (int j = 0; j < 8; j++) {
-			if ((input8[i/8] >> (i%8)) & 0x01) {
-				*(temp + j) = '1';		
-			} else {
-				*(temp + j) = '0';
-			}
-			i++;
-		}
-		for (int j = 7; j >= 0; j--) {
-			output64[k++] = *(temp + j);
-		}
+    int i = 0, k = 0;
+    while (i < 64) {
+	char temp[8] = {0};
+	for (int j = 0; j < 8; j++) {
+	    if ((input8[i/8] >> (i%8)) & 0x01) {
+		*(temp + j) = '1';		
+ 	    } else {
+		*(temp + j) = '0';
+	    }
+	    i++;
 	}
-	output64[64] = '\0';                               
+	for (int j = 7; j >= 0; j--) {
+	    output64[k++] = *(temp + j);
+	}
+    }
+    output64[64] = '\0';                               
 }
 
 void bitbyte(char *input64, unsigned short *output8_char) {
-	int i = 0, k = 0;
-	while(input64[i] != '\0') {
-		for (int j = 7; j >= 0; j--) { 
-			if (input64[i] == '1') {
-				output8_char[k] += pow(2, j) * 1;
-			} else if (input64[i] == '0') {
-				output8_char[k] += pow(2, j) * 0;
-			}
-			i++;
-		}
-		printf("%x ", output8_char[k]);
-		k++;
+    int i = 0, k = 0;
+    while(input64[i] != '\0') {
+	for (int j = 7; j >= 0; j--) { 
+	    if (input64[i] == '1') {
+		output8_char[k] += pow(2, j) * 1;
+	    } else if (input64[i] == '0') {
+		output8_char[k] += pow(2, j) * 0;
+	    }
+	    i++;
 	}
-	printf("\n");
-	output8_char[8] = '\0';                         
+	printf("%x ", output8_char[k]);
+	k++;
+    }
+    printf("\n");
+    output8_char[8] = '\0';                         
 }
 
 void key(char* k64, char (*sk48)[49], int *rnd_time) {
@@ -197,10 +197,10 @@ void rfunc(char* left, char* right, char* sk) {
         rows = ((output_2[i*6] - '0') << 1 ) + (output_2[i*6 + 5] - '0');
         columns = ((output_2[i*6 + 1] - '0') << 3) + ((output_2[i*6 + 2] - '0') << 2) +
          ((output_2[i*6 + 3] - '0') << 1) + (output_2[i*6 + 4] - '0');
-		for(j=3; j >= 0; j--) {
+	for(j=3; j >= 0; j--) {
            *(output_3 + (i*4 + 3 - j)) = ((tabS[i][rows*16 + columns] >> j) & 1) + '0';
-		}
 	}
+    }
     *(output_3 + 32) = '\0';
     permutation(output_3, output_4, 32, *P);
     strcpy(temp, right);
@@ -209,9 +209,9 @@ void rfunc(char* left, char* right, char* sk) {
 }
 
 void encode(char *input8, char *key8) {	
-	unsigned short output8_char[9] = {0};
-	char input64[65] = {0};
-	char key64[65] = {0};
+    unsigned short output8_char[9] = {0};
+    char input64[65] = {0};
+    char key64[65] = {0};
     char output[65] = {0};
     char left[33] = {0};
     char right[33] = {0};
@@ -220,35 +220,35 @@ void encode(char *input8, char *key8) {
     bytebit(key8, key64);
     key(key64, sk, rnd_time);
     int i = 0, j = 0;
-	int num = strlen(input8) / 8;
-	for (j = 0; j < num; j++) {
-		char tmpstr[9] = {0};
-		strncpy(tmpstr, input8 + j*8, 8);
-		bytebit(tmpstr, input64);
-		printf("Raw block %d in hex    : ", j + 1);
-		memset(output8_char, 0x00, sizeof(output8_char));
-		bitbyte(input64, output8_char);	
-		permutation(input64, output, 64, *IP64);
-		strcpy(left, output);
-		strcpy(right, output + 32);
-		for(i = 0; i < 16; i++) {
-			rfunc(left, right, *(sk + i));
-		}
-		strncpy(output, right, 32);
-		strncpy(output + 32, left, 32);
-		permutation(output, cipher, 64, *revIP64);
-		printf("Encoded block %d in hex: ", j + 1);
-		memset(output8_char, 0x00, sizeof(output8_char));
-		bitbyte(cipher, output8_char);
+    int num = strlen(input8) / 8;
+    for (j = 0; j < num; j++) {
+	char tmpstr[9] = {0};
+	strncpy(tmpstr, input8 + j*8, 8);
+	bytebit(tmpstr, input64);
+	printf("Raw block %d in hex    : ", j + 1);
+	memset(output8_char, 0x00, sizeof(output8_char));
+	bitbyte(input64, output8_char);	
+	permutation(input64, output, 64, *IP64);
+	strcpy(left, output);
+	strcpy(right, output + 32);
+	for(i = 0; i < 16; i++) {
+	    rfunc(left, right, *(sk + i));
 	}
+	strncpy(output, right, 32);
+	strncpy(output + 32, left, 32);
+	permutation(output, cipher, 64, *revIP64);
+	printf("Encoded block %d in hex: ", j + 1);
+	memset(output8_char, 0x00, sizeof(output8_char));
+	bitbyte(cipher, output8_char);
+    }
 }
 
 void input(char *buffer) {
-	int i = 0;
-	char c;
-	while ((c = getchar()) != '\n') {
-		buffer[i++] = c;
-	}
-	buffer[i] = '\0';
+    int i = 0;
+    char c;
+    while ((c = getchar()) != '\n') {
+	buffer[i++] = c;
+    }
+    buffer[i] = '\0';
 }
 
