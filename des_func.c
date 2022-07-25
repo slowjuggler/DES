@@ -243,10 +243,10 @@ void encode(char *input8, char *key8) {
     }
 }
 
-void input(char *buffer) {
+void input(char *buffer, int len) {
     int i = 0;
     char c;
-    while ((c = getchar()) != '\n') {
+    while ((c = getchar()) != '\n' && i < len - 1) {
 	buffer[i++] = c;
     }
     buffer[i] = '\0';
