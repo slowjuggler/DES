@@ -20,6 +20,6 @@ void xoring(char* input_1, char* input_2, int lenth, char* output);
 void key(char* k64, char (*sk48)[49], int *round);
 void rfunc(char* left, char* right, char* sk);
 void encode(char *input8, char *key8);
-void input(char *buffer);
+void input(char *buffer, int len);
 
 #endif //  DES_H
