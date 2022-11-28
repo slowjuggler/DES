@@ -16,10 +16,10 @@ void bytebit(char *input8, char *output64);
 void bitbyte(char *input64, unsigned short *output8_char);
 void permutation(char *input, char *output, int lenth, char *table);
 void shifting(char *input, char *output, int lenth, int cicle_count);
-void xoring(char* input_1, char* input_2, int lenth, char* output);
-void key(char* k64, char (*sk48)[49], int *round);
-void rfunc(char* left, char* right, char* sk);
+void xoring(char *input_1, char *input_2, int lenth, char *output);
+void key(char *k64, char (*sk48)[49], int *round);
+void rfunc(char *left, char *right, char *sk);
 void encode(char *input8, char *key8);
 void input(char *buffer, int len);
 
-#endif //  DES_H
+#endif  //  DES_H
